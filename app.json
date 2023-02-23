@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "wagglewaggle-webview",
+    "name": "와글와글",
     "slug": "wagglewaggle-webview",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,8 +8,8 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -18,16 +18,22 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.exit.wagglewaggle",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.exit.wagglewaggle",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#ffffff"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "extra": {
+      "eas": {
+        "projectId": "eca32284-b37a-4851-ad67-629ac058da25"
+      }
     }
   }
 }

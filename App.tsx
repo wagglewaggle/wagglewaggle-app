@@ -1,20 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { WebView } from "react-native-webview";
+import * as SplashScreen from "expo-splash-screen";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+const App = () => {
+  const sleep = (ms: number) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  const delaySplash = async () => {
+    await SplashScreen.preventAutoHideAsync();
+    await sleep(2000);
+    await SplashScreen.hideAsync();
+  };
+
+  delaySplash();
+
+  return <WebView source={{ uri: "https://wagglewaggle.co.kr" }} />;
+};
+
+export default App;
