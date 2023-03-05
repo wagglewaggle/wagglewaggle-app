@@ -1,13 +1,19 @@
 import { useEffect, useRef } from "react";
-import { BackHandler, Platform, SafeAreaView, Appearance } from "react-native";
+import {
+  BackHandler,
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  Text,
+} from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 import { WebView } from "react-native-webview";
 import * as SplashScreen from "expo-splash-screen";
 import * as Location from "expo-location";
+import * as Linking from "expo-linking";
 
 const App = () => {
   const webViewRef = useRef<WebView>(null);
-  const SAFE_AREA_BACKGROUND_COLOR =
-    Appearance.getColorScheme() === "dark" ? "#000" : "#fff";
 
   const sleep = (ms: number) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -63,18 +69,30 @@ const App = () => {
   }, []);
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: SAFE_AREA_BACKGROUND_COLOR }}
+    <NavigationContainer
+      linking={{
+        prefixes: [
+          Linking.createURL("/"),
+          "https://wagglewaggle.co.kr",
+          "https://640446f59287d60008e704af--super-dodol-2a5183.netlify.app/",
+        ],
+      }}
+      fallback={<Text>Loading...</Text>}
     >
-      <WebView
-        ref={webViewRef}
-        source={{ uri: "http://192.168.45.139:3000" }}
-        onLoadEnd={getUserLocation}
-        cacheEnabled
-        javaScriptEnabled
-        allowsBackForwardNavigationGestures
-      />
-    </SafeAreaView>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+        <StatusBar barStyle="dark-content" />
+        <WebView
+          ref={webViewRef}
+          source={{
+            uri: "https://640446f59287d60008e704af--super-dodol-2a5183.netlify.app",
+          }}
+          onLoadEnd={getUserLocation}
+          cacheEnabled
+          javaScriptEnabled
+          allowsBackForwardNavigationGestures
+        />
+      </SafeAreaView>
+    </NavigationContainer>
   );
 };
 
