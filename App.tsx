@@ -5,6 +5,8 @@ import {
   SafeAreaView,
   StatusBar,
   Text,
+  Appearance,
+  KeyboardAvoidingView,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { WebView } from "react-native-webview";
@@ -14,6 +16,7 @@ import * as Linking from "expo-linking";
 
 const App = () => {
   const webViewRef = useRef<WebView>(null);
+  const colorScheme = Appearance.getColorScheme();
 
   const sleep = (ms: number) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -74,23 +77,35 @@ const App = () => {
         prefixes: [
           Linking.createURL("/"),
           "https://wagglewaggle.co.kr",
-          "https://640446f59287d60008e704af--super-dodol-2a5183.netlify.app/",
+          "https://64044a7ddd3dac686e27999e--super-dodol-2a5183.netlify.app",
         ],
       }}
       fallback={<Text>Loading...</Text>}
     >
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-        <StatusBar barStyle="dark-content" />
-        <WebView
-          ref={webViewRef}
-          source={{
-            uri: "https://640446f59287d60008e704af--super-dodol-2a5183.netlify.app",
-          }}
-          onLoadEnd={getUserLocation}
-          cacheEnabled
-          javaScriptEnabled
-          allowsBackForwardNavigationGestures
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: colorScheme === "dark" ? "#000" : "#fff",
+        }}
+      >
+        <StatusBar
+          backgroundColor={colorScheme === "dark" ? "#000" : "#fff"}
+          barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
         />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          style={{ flex: 1 }}
+        >
+          <WebView
+            ref={webViewRef}
+            source={{ uri: "http://192.168.45.139:3000" }}
+            onLoadEnd={getUserLocation}
+            cacheEnabled
+            javaScriptEnabled
+            allowsBackForwardNavigationGestures
+            bounces={false}
+          />
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </NavigationContainer>
   );
