@@ -1,21 +1,19 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import {
-  BackHandler,
   Platform,
   SafeAreaView,
   StatusBar,
-  Text,
+  Keyboard,
   Appearance,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { WebView } from "react-native-webview";
 import * as SplashScreen from "expo-splash-screen";
-import * as Location from "expo-location";
 import * as Linking from "expo-linking";
+import { AppWebView } from "./components";
 
 const App = () => {
-  const webViewRef = useRef<WebView>(null);
   const colorScheme = Appearance.getColorScheme();
 
   const sleep = (ms: number) => {
@@ -28,47 +26,8 @@ const App = () => {
     await SplashScreen.hideAsync();
   };
 
-  const onAndroidBackPress = () => {
-    if (webViewRef.current) {
-      webViewRef.current.goBack();
-      return true;
-    }
-    return false;
-  };
-
-  const getUserLocation = async () => {
-    try {
-      await Location.requestForegroundPermissionsAsync();
-      const {
-        coords: { latitude, longitude },
-      } = await Location.getCurrentPositionAsync();
-      webViewRef.current?.postMessage(
-        JSON.stringify({
-          code: "success",
-          latitude: latitude,
-          longitude: longitude,
-        })
-      );
-    } catch (e) {
-      webViewRef.current?.postMessage(
-        JSON.stringify({ code: "fail", errorMsg: "location permission denied" })
-      );
-    }
-  };
-
   useEffect(() => {
     delaySplash();
-  }, []);
-
-  useEffect(() => {
-    if (Platform.OS === "android") {
-      BackHandler.addEventListener("hardwareBackPress", onAndroidBackPress);
-      return () =>
-        BackHandler.removeEventListener(
-          "hardwareBackPress",
-          onAndroidBackPress
-        );
-    }
   }, []);
 
   return (
@@ -76,11 +35,11 @@ const App = () => {
       linking={{
         prefixes: [
           Linking.createURL("/"),
+          "http://192.168.45:139:3000",
           "https://wagglewaggle.co.kr",
           "https://64044a7ddd3dac686e27999e--super-dodol-2a5183.netlify.app",
         ],
       }}
-      fallback={<Text>Loading...</Text>}
     >
       <SafeAreaView
         style={{
@@ -93,18 +52,16 @@ const App = () => {
           barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
         />
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-          style={{ flex: 1 }}
+          behavior="padding"
+          style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
+          enabled={Platform.OS === "ios"}
         >
-          <WebView
-            ref={webViewRef}
-            source={{ uri: "http://192.168.45.139:3000" }}
-            onLoadEnd={getUserLocation}
-            cacheEnabled
-            javaScriptEnabled
-            allowsBackForwardNavigationGestures
-            bounces={false}
-          />
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}
+            accessible={false}
+          >
+            <AppWebView />
+          </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
       </SafeAreaView>
     </NavigationContainer>
