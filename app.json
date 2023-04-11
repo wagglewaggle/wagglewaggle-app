@@ -2,7 +2,7 @@
   "expo": {
     "name": "와글와글",
     "slug": "wagglewaggle-webview",
-    "version": "1.0.6",
+    "version": "1.1.2",
     "orientation": "portrait",
     "scheme": "wagglewaggle",
     "icon": "./assets/icon.png",
@@ -18,7 +18,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.exit.wagglewaggle",
-      "buildNumber": "1.0.6",
+      "buildNumber": "1.1.2",
       "userInterfaceStyle": "automatic",
       "supportsTablet": true,
       "infoPlist": {
@@ -27,7 +27,7 @@
     },
     "android": {
       "package": "com.exit.wagglewaggle",
-      "versionCode": 7,
+      "versionCode": 15,
       "userInterfaceStyle": "automatic",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
